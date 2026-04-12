@@ -38,7 +38,18 @@ function buildConversion(date: Date): DateConversion {
   const dayOfYear = getDayOfYear(date);
   const isoWithOffset = getIsoWithOffset(date);
 
-  return { unix, unixMs, iso8601, utc, local, relative, rfc2822, weekNumber, dayOfYear, isoWithOffset };
+  return {
+    unix,
+    unixMs,
+    iso8601,
+    utc,
+    local,
+    relative,
+    rfc2822,
+    weekNumber,
+    dayOfYear,
+    isoWithOffset,
+  };
 }
 
 export function getRelative(date: Date): string {
@@ -52,25 +63,41 @@ export function getRelative(date: Date): string {
   if (absSec < 3600) return rtf.format(Math.round(diffSec / 60), "minute");
   if (absSec < 86400) return rtf.format(Math.round(diffSec / 3600), "hour");
   if (absSec < 2592000) return rtf.format(Math.round(diffSec / 86400), "day");
-  if (absSec < 31536000) return rtf.format(Math.round(diffSec / 2592000), "month");
+  if (absSec < 31536000)
+    return rtf.format(Math.round(diffSec / 2592000), "month");
   return rtf.format(Math.round(diffSec / 31536000), "year");
 }
 
 function getRfc2822(date: Date): string {
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const day = days[date.getUTCDay()];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const day = days[date.getUTCDay()] ?? "Sun";
   const dayNum = String(date.getUTCDate()).padStart(2, "0");
-  const month = months[date.getUTCMonth()];
+  const month = months[date.getUTCMonth()] ?? "Jan";
   const year = date.getUTCFullYear();
   const h = String(date.getUTCHours()).padStart(2, "0");
   const m = String(date.getUTCMinutes()).padStart(2, "0");
   const s = String(date.getUTCSeconds()).padStart(2, "0");
-  return `${day!}, ${dayNum} ${month} ${year} ${h}:${m}:${s} +0000`;
+  return `${day}, ${dayNum} ${month} ${year} ${h}:${m}:${s} +0000`;
 }
 
 function getIsoWeekNumber(date: Date): number {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const d = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+  );
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
@@ -92,7 +119,9 @@ function getIsoWithOffset(date: Date): string {
   const pad = (n: number) => String(n).padStart(2, "0");
   return (
     `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` +
-    `T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}` +
+    `T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(
+      date.getSeconds()
+    )}` +
     `${sign}${hh}:${mm}`
   );
 }

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { useState, type FC } from "react";
 import Head from "next/head";
 import Layout from "../containers/layout";
 import { HexAlphaColorPicker, RgbaColorPicker } from "react-colorful";
@@ -6,7 +6,7 @@ import convert from "color-convert";
 import { Input } from "../components/Input";
 import { useForm } from "react-hook-form";
 import { Title } from "../components/Title";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import { CopyOnClick } from "../components/ClickToCopy";
 
 type ColorRgba = {

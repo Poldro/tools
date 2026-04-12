@@ -1,22 +1,27 @@
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import type {
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from "react-hook-form";
 
-type InputTextProps = {
+type InputTextProps<T extends FieldValues = FieldValues> = {
   type: string;
   label?: string;
-  name: string;
+  name: Path<T>;
   value?: string;
   defaultValue?: number | string;
-  errors: FieldErrors<FieldValues>;
+  errors: FieldErrors<T>;
   errorsType: {
     required?: boolean;
     max?: number;
     min?: number;
   };
-  register: UseFormRegister<FieldValues>;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Add this line
+  register: UseFormRegister<T>;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const Input = ({
+export const Input = <T extends FieldValues = FieldValues>({
   type,
   label,
   name,
@@ -26,7 +31,7 @@ export const Input = ({
   errors,
   errorsType,
   onChange,
-}: InputTextProps) => {
+}: InputTextProps<T>) => {
   return (
     <div className="flex w-auto flex-col items-center space-y-2">
       {label && (
@@ -40,7 +45,7 @@ export const Input = ({
 
       <input
         type={type}
-        className="bg-dark text-gray-300 placeholder-gray-400 block w-44 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+        className="block w-44 rounded-md border-gray-300 bg-dark text-gray-300 placeholder-gray-400 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
         value={value}
         defaultValue={defaultValue}
         {...register(name, errorsType)}

@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  type FieldValues,
-  useForm,
-  type UseFormRegister,
-} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Input } from "../../components/Input";
 import { CopyOnClick } from "../../components/ClickToCopy";
@@ -64,7 +60,7 @@ export const DummyEmail = () => {
               max: 100,
               min: 0,
             }}
-            register={register as UseFormRegister<FieldValues>}
+            register={register}
           />
           <PrimaryButton
             type="submit"

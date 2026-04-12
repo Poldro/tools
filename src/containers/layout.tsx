@@ -13,6 +13,7 @@ import {
 import { navigation } from "../utils/const";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Image from "next/image";
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   DocumentTextIcon,
@@ -93,10 +94,12 @@ export default function LayoutCountWords({
                   </Transition.Child>
                   <div className="h-0 flex-1 overflow-y-auto py-6">
                     <div className="flex flex-shrink-0 items-center px-4">
-                      <img
+                      <Image
                         className="h-12 w-auto"
                         src="/poldro-logo.png"
                         alt="Your Company"
+                        width={200}
+                        height={48}
                       />
                     </div>
                     <nav className="mt-5 space-y-1 px-2">
@@ -137,10 +140,12 @@ export default function LayoutCountWords({
             <div className="flex flex-1 flex-col overflow-y-auto py-6">
               <div className="flex flex-shrink-0 items-center px-4">
                 <Link href="/">
-                  <img
+                  <Image
                     className="h-10 w-auto"
                     src="/poldro-logo.png"
                     alt="Your Company"
+                    width={200}
+                    height={40}
                   />
                 </Link>
               </div>

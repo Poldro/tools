@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import { GrammarlyEditorPlugin } from "@grammarly/editor-sdk-react";
 import Head from "next/head";
 import Layout from "../containers/layout";
@@ -23,7 +23,7 @@ function calculateCounts(text: string) {
 }
 
 const CountWords: NextPage = () => {
-  const [text, setText] = useState('');  // New state variable
+  const [text, setText] = useState(""); // New state variable
 
   const [counts, setCounts] = useState({
     wordCount: 0,
@@ -40,7 +40,7 @@ const CountWords: NextPage = () => {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const newText = e.target.value;
-      setText(newText);  // Update text state variable
+      setText(newText); // Update text state variable
       setCounts(calculateCounts(newText));
     },
     []
@@ -71,7 +71,7 @@ const CountWords: NextPage = () => {
             <div className="overflow-hidden px-4 py-4 sm:px-6">
               <GrammarlyEditorPlugin clientId="client_2QNNYPesdJhwfCszntmPA6">
                 <TextAreaInput
-                value={text}
+                  value={text}
                   placeholder="Copy paste your text to count words, characters and sentences. You can select a particular piece of text to count it."
                   onChange={handleChange}
                   onSelect={handleSelection}

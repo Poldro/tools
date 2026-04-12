@@ -1,11 +1,5 @@
-import {
-  ClipboardDocumentIcon,
-  ClipboardIcon,
-  ScissorsIcon,
-} from "@heroicons/react/24/outline";
 import RandExp from "randexp";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { loremIpsumData } from "../../utils/dummy-data";
 import TextAreaInput from "../../components/TextAreaInput";
 import { CopyOnClick } from "../../components/ClickToCopy";

@@ -1,10 +1,6 @@
 import RandExp from "randexp";
 import { useState } from "react";
-import {
-  type FieldValues,
-  useForm,
-  type UseFormRegister,
-} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Input } from "../../components/Input";
 import TextAreaInput from "../../components/TextAreaInput";
 import { CopyOnClick } from "../../components/ClickToCopy";
@@ -53,7 +49,7 @@ export const DummyPhone = () => {
                 errorsType={{
                   required: true,
                 }}
-                register={register as UseFormRegister<FieldValues>}
+                register={register}
               />
               <p className="mt-1 text-xs text-gray-500">
                 Es: (#####) ### #### or 570-###-###
@@ -71,7 +67,7 @@ export const DummyPhone = () => {
                   max: 100,
                   min: 0,
                 }}
-                register={register as UseFormRegister<FieldValues>}
+                register={register}
               />
             </span>
           </div>
