@@ -9,7 +9,6 @@ import { Title } from "../components/Title";
 import { NextPage } from "next";
 import { CopyOnClick } from "../components/ClickToCopy";
 
-
 type ColorRgba = {
   r: number;
   g: number;
@@ -19,7 +18,12 @@ type ColorRgba = {
 
 const ColorConverter: NextPage = () => {
   const [colorHex, setColorHex] = useState("#aabbcc");
-  const [colorRgba, setColorRgba] = useState<ColorRgba>({ r: 170, g: 187, b: 204, a: 1 });
+  const [colorRgba, setColorRgba] = useState<ColorRgba>({
+    r: 170,
+    g: 187,
+    b: 204,
+    a: 1,
+  });
   const [inputColor, setInputColor] = useState("#aabbcc");
   const [colorFormat, setColorFormat] = useState("hex");
 
@@ -90,11 +94,11 @@ const ColorConverter: NextPage = () => {
         .map(Number);
 
       if (rgbaValues.length === 4) {
-        const [r, g, b, a] = rgbaValues;
+        const [r = 0, g = 0, b = 0, a = 1] = rgbaValues;
         setColorRgba({ r, g, b, a });
         setColorFormat("rgba");
       } else if (rgbaValues.length === 3) {
-        const [r, g, b] = rgbaValues;
+        const [r = 0, g = 0, b = 0] = rgbaValues;
         setColorRgba({ r, g, b, a: colorRgba.a });
         setColorFormat("rgba");
       }
@@ -124,7 +128,7 @@ const ColorConverter: NextPage = () => {
         <div className="flex w-full flex-col items-center justify-start space-y-4 lg:space-y-6">
           <Title title="Color Converter" />
 
-          <div className="w-full max-w-3xl rounded-lg bg-white shadow">
+          <div className="w-full max-w-3xl rounded-lg border border-gray-700 bg-dark/50 shadow">
             <div
               style={{
                 backgroundColor:
@@ -172,11 +176,11 @@ const ColorConverter: NextPage = () => {
 export default ColorConverter;
 
 const ColorPicker: FC<{
-  colorFormat: string,
-  colorHex: string,
-  handleHexChange: (color: string) => void,
-  colorRgba: ColorRgba,
-  handleRgbaChange: (color: ColorRgba) => void,
+  colorFormat: string;
+  colorHex: string;
+  handleHexChange: (color: string) => void;
+  colorRgba: ColorRgba;
+  handleRgbaChange: (color: ColorRgba) => void;
 }> = ({
   colorFormat,
   colorHex,

@@ -1,9 +1,27 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  ClockIcon,
+  CodeBracketIcon,
+  DocumentTextIcon,
+  MagnifyingGlassIcon,
+  SparklesIcon,
+  SwatchIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { navigation } from "../utils/const";
 import { useRouter } from "next/router";
 import Link from "next/link";
+
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  DocumentTextIcon,
+  SparklesIcon,
+  SwatchIcon,
+  CodeBracketIcon,
+  MagnifyingGlassIcon,
+  ClockIcon,
+};
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -82,20 +100,26 @@ export default function LayoutCountWords({
                       />
                     </div>
                     <nav className="mt-5 space-y-1 px-2">
-                      {navigation.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className={classNames(
-                            item.href === router.pathname
-                              ? "bg-gradient-to-r from-primary to-dark text-white"
-                              : "text-gray-300 hover:bg-dark hover:text-white",
-                            "group flex items-center rounded-md px-2 py-2 text-base font-medium"
-                          )}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
+                      {navigation.map((item) => {
+                        const Icon = ICON_MAP[item.icon];
+                        return (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            className={classNames(
+                              item.href === router.pathname
+                                ? "bg-gradient-to-r from-primary to-dark text-white"
+                                : "text-gray-300 hover:bg-dark hover:text-white",
+                              "group flex items-center gap-3 rounded-md px-2 py-2 text-base font-medium"
+                            )}
+                          >
+                            {Icon && (
+                              <Icon className="h-5 w-5 flex-shrink-0 opacity-75" />
+                            )}
+                            {item.name}
+                          </Link>
+                        );
+                      })}
                     </nav>
                   </div>
                 </Dialog.Panel>
@@ -121,20 +145,26 @@ export default function LayoutCountWords({
                 </Link>
               </div>
               <nav className="mt-5 flex-1 space-y-1 px-2">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.href === router.pathname
-                        ? "bg-gradient-to-r from-primary to-dark text-white"
-                        : "text-gray-300 hover:bg-dark hover:text-white",
-                      "group flex items-center rounded-md px-2 py-2 text-sm font-medium"
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                {navigation.map((item) => {
+                  const Icon = ICON_MAP[item.icon];
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={classNames(
+                        item.href === router.pathname
+                          ? "bg-gradient-to-r from-primary to-dark text-white"
+                          : "text-gray-300 hover:bg-dark hover:text-white",
+                        "group flex items-center gap-3 rounded-md px-2 py-2 text-sm font-medium"
+                      )}
+                    >
+                      {Icon && (
+                        <Icon className="h-5 w-5 flex-shrink-0 opacity-75" />
+                      )}
+                      {item.name}
+                    </Link>
+                  );
+                })}
               </nav>
             </div>
           </div>
@@ -155,13 +185,13 @@ export default function LayoutCountWords({
               <div className="mx-auto flex max-w-7xl flex-1 flex-col px-4 sm:px-6 lg:px-8 ">
                 {children}
                 <div className="mt-4 text-center">
-                <Link
-                  className=" text-primary hover:underline"
-                  href="https://github.com/Poldro/tools"
-                  target="_blank"
-                >
-                  Repository GitHub
-                </Link>
+                  <Link
+                    className=" text-primary hover:underline"
+                    href="https://github.com/Poldro/tools"
+                    target="_blank"
+                  >
+                    Repository GitHub
+                  </Link>
                 </div>
               </div>
             </div>

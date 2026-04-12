@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 type TextAreaInputProps = {
   placeholder?: string;
@@ -11,7 +11,7 @@ type TextAreaInputProps = {
 const TextAreaInput: React.FC<TextAreaInputProps> = ({
   placeholder = "",
   value = "",
-  onSelect = () => {},
+  onSelect,
   onChange,
   className = "",
 }) => {
@@ -28,12 +28,12 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
   return (
     <textarea
       ref={textareaRef}
-      style={{ minHeight:100, maxHeight: 400 }}
+      style={{ minHeight: 100, maxHeight: 400 }}
       onChange={onChange}
       onSelect={onSelect}
       value={value}
       placeholder={placeholder}
-      className={`bg-dark text-gray-300 placeholder-gray-400 max-h-full block w-full resize-none rounded-md border-0 p-2 scrollbar-hide focus:outline-0 focus:ring-2 focus:ring-primary text-sm ${className}`}
+      className={`block max-h-full w-full resize-none rounded-md border-0 bg-dark p-2 text-sm text-gray-300 placeholder-gray-400 scrollbar-hide focus:outline-0 focus:ring-2 focus:ring-primary ${className}`}
     ></textarea>
   );
 };

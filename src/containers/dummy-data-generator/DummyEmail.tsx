@@ -1,41 +1,58 @@
-import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
-import RandExp from "randexp";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import {
+  type FieldValues,
+  useForm,
+  type UseFormRegister,
+} from "react-hook-form";
 import { toast } from "react-toastify";
 import { Input } from "../../components/Input";
 import { CopyOnClick } from "../../components/ClickToCopy";
 import TextAreaInput from "../../components/TextAreaInput";
 import PrimaryButton from "../../components/PrimaryButton";
 
+interface EmailFormData {
+  emailToGenerate: number;
+}
+
+interface RandomUserResult {
+  results: Array<{ email: string }>;
+}
+
 export const DummyEmail = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<EmailFormData>();
 
   const [randomEmails, setRandomEmails] = useState<string>(
     "user-fake@example.com"
   );
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: EmailFormData) => {
+    setIsLoading(true);
     setRandomEmails("");
-    const email = await fetch(
-      `https://randomuser.me/api/?inc=email&results=${data["emailToGenerate"]}`
-    );
-    const result = await email.json();
-    setRandomEmails(
-      (prevValue) =>
-        prevValue +
-        result.results.map((i: { email: string }) => i.email + "\n").join("")
-    );
+    try {
+      const response = await fetch(
+        `https://randomuser.me/api/?inc=email&results=${data.emailToGenerate}`
+      );
+      const result = (await response.json()) as RandomUserResult;
+      setRandomEmails(result.results.map((i) => i.email + "\n").join(""));
+    } catch {
+      toast.error("Failed to generate emails. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <>
       <div className="text-center">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+          className="space-y-4"
+        >
           <Input
             type={"number"}
             label={"Number of emails to generate"}
@@ -47,12 +64,20 @@ export const DummyEmail = () => {
               max: 100,
               min: 0,
             }}
-            register={register}
+            register={register as UseFormRegister<FieldValues>}
           />
-          <PrimaryButton type="submit" text="Generate" />
+          <PrimaryButton
+            type="submit"
+            text={isLoading ? "Generating..." : "Generate"}
+            disabled={isLoading}
+          />
         </form>
       </div>
-      <CopyOnClick copyText={randomEmails.toString()} allClickable={false} className="top-1 right-1">
+      <CopyOnClick
+        copyText={randomEmails}
+        allClickable={false}
+        className="top-1 right-1"
+      >
         <div className="relative">
           <TextAreaInput
             value={randomEmails}

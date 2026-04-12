@@ -1,14 +1,16 @@
-import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 import RandExp from "randexp";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import {
+  type FieldValues,
+  useForm,
+  type UseFormRegister,
+} from "react-hook-form";
 import { Input } from "../../components/Input";
 import TextAreaInput from "../../components/TextAreaInput";
 import { CopyOnClick } from "../../components/ClickToCopy";
 import PrimaryButton from "../../components/PrimaryButton";
 
-interface dataSubmit {
+interface PhoneFormData {
   phoneToGenerate: number;
   phoneFormat: string;
 }
@@ -18,27 +20,28 @@ export const DummyPhone = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<PhoneFormData>();
 
   const [randomNumbers, setRandomNumbers] = useState<string>(
     new RandExp(/^\+39\s\d{10}$/).gen()
   );
 
-  const onSubmit = (data: any) => {
-    setRandomNumbers("");
-    for (let i = 0; i < data["phoneToGenerate"]; i++) {
-      setRandomNumbers(
-        (prevValue) =>
-          prevValue + substituteRandomNumbers(data["phoneFormat"]) + "\n"
-      );
+  const onSubmit = (data: PhoneFormData) => {
+    let result = "";
+    for (let i = 0; i < data.phoneToGenerate; i++) {
+      result += substituteRandomNumbers(data.phoneFormat) + "\n";
     }
+    setRandomNumbers(result);
   };
 
   return (
     <>
       {" "}
       <div className="text-center">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+          className="space-y-4"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2">
             <span>
               <Input
@@ -50,7 +53,7 @@ export const DummyPhone = () => {
                 errorsType={{
                   required: true,
                 }}
-                register={register}
+                register={register as UseFormRegister<FieldValues>}
               />
               <p className="mt-1 text-xs text-gray-500">
                 Es: (#####) ### #### or 570-###-###
@@ -68,14 +71,18 @@ export const DummyPhone = () => {
                   max: 100,
                   min: 0,
                 }}
-                register={register}
+                register={register as UseFormRegister<FieldValues>}
               />
             </span>
           </div>
           <PrimaryButton type="submit" text="Generate" />
         </form>
       </div>
-      <CopyOnClick copyText={randomNumbers.toString()} allClickable={false} className="top-1 right-1">
+      <CopyOnClick
+        copyText={randomNumbers}
+        allClickable={false}
+        className="top-1 right-1"
+      >
         <div className="relative">
           <TextAreaInput
             value={randomNumbers}
@@ -88,14 +95,7 @@ export const DummyPhone = () => {
 };
 
 function substituteRandomNumbers(formatString: string) {
-  // Define a regular expression pattern that matches # characters
-  const pattern = /#/g;
-
-  // Use the replace() method to substitute # characters with random digits
-  const substitutedString = formatString.replace(pattern, () => {
-    // Generate a random digit between 0 and 9
-    const randomDigit = Math.floor(Math.random() * 10);
-    return randomDigit.toString();
-  });
-  return substitutedString;
+  return formatString.replace(/#/g, () =>
+    Math.floor(Math.random() * 10).toString()
+  );
 }
