@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
+  Bars3BottomLeftIcon,
   Bars3Icon,
   ClockIcon,
   CodeBracketIcon,
@@ -22,6 +23,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   CodeBracketIcon,
   MagnifyingGlassIcon,
   ClockIcon,
+  Bars3BottomLeftIcon,
 };
 
 function classNames(...classes: string[]) {

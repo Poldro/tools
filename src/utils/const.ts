@@ -47,4 +47,12 @@ export const navigation = [
       "Convert Unix timestamps to ISO 8601, RFC 2822, local time, and more — and back.",
     icon: "ClockIcon",
   },
+  {
+    name: "Text Unwrapper",
+    href: "/text-unwrapper",
+    current: false,
+    description:
+      "Reflow hard-wrapped console text: rejoin broken lines while keeping bullets and paragraphs.",
+    icon: "Bars3BottomLeftIcon",
+  },
 ];

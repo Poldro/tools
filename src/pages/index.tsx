@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import {
+  Bars3BottomLeftIcon,
   ClockIcon,
   CodeBracketIcon,
   DocumentTextIcon,
@@ -19,6 +20,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   CodeBracketIcon,
   MagnifyingGlassIcon,
   ClockIcon,
+  Bars3BottomLeftIcon,
 };
 
 const Home: NextPage = () => {
@@ -26,7 +28,10 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>Dev Tools</title>
-        <meta name="description" content="A collection of web development tools" />
+        <meta
+          name="description"
+          content="A collection of web development tools"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-dark-secondary via-dark to-dark">
@@ -50,15 +55,15 @@ const Home: NextPage = () => {
                   className="group flex items-start gap-4 rounded-xl border border-white/10 bg-white/5 p-5 transition-colors hover:border-primary/40 hover:bg-white/10"
                 >
                   {Icon && (
-                    <div className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary transition-colors group-hover:bg-primary/25">
+                    <div className="bg-primary/15 mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-primary transition-colors group-hover:bg-primary/25">
                       <Icon className="h-5 w-5" />
                     </div>
                   )}
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     <p className="font-semibold text-gray-100 group-hover:text-white">
                       {item.name}
                     </p>
-                    <p className="mt-1 text-sm text-gray-400 leading-snug">
+                    <p className="mt-1 text-sm leading-snug text-gray-400">
                       {item.description}
                     </p>
                   </div>
