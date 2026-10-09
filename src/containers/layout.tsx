@@ -1,15 +1,10 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ICON_MAP } from "../components/toolIcons";
-import { navigation } from "../utils/const";
+import { SidebarNav } from "../components/SidebarNav";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function LayoutCountWords({
   children,
@@ -85,28 +80,11 @@ export default function LayoutCountWords({
                         height={48}
                       />
                     </div>
-                    <nav className="mt-5 space-y-1 px-2">
-                      {navigation.map((item) => {
-                        const Icon = ICON_MAP[item.icon];
-                        return (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.href === router.pathname
-                                ? "bg-gradient-to-r from-primary to-dark text-white"
-                                : "text-gray-300 hover:bg-dark hover:text-white",
-                              "group flex items-center gap-3 rounded-md px-2 py-2 text-base font-medium"
-                            )}
-                          >
-                            {Icon && (
-                              <Icon className="h-5 w-5 flex-shrink-0 opacity-75" />
-                            )}
-                            {item.name}
-                          </Link>
-                        );
-                      })}
-                    </nav>
+                    <SidebarNav
+                      pathname={router.pathname}
+                      large
+                      className="mt-6"
+                    />
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -132,28 +110,10 @@ export default function LayoutCountWords({
                   />
                 </Link>
               </div>
-              <nav className="mt-5 flex-1 space-y-1 px-2">
-                {navigation.map((item) => {
-                  const Icon = ICON_MAP[item.icon];
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        item.href === router.pathname
-                          ? "bg-gradient-to-r from-primary to-dark text-white"
-                          : "text-gray-300 hover:bg-dark hover:text-white",
-                        "group flex items-center gap-3 rounded-md px-2 py-2 text-sm font-medium"
-                      )}
-                    >
-                      {Icon && (
-                        <Icon className="h-5 w-5 flex-shrink-0 opacity-75" />
-                      )}
-                      {item.name}
-                    </Link>
-                  );
-                })}
-              </nav>
+              <SidebarNav
+                pathname={router.pathname}
+                className="mt-6 flex-1"
+              />
             </div>
           </div>
         </div>
