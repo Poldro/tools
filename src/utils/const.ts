@@ -56,3 +56,5 @@ export const navigation = [
     icon: "Bars3BottomLeftIcon",
   },
 ];
+
+export const SITE_URL = "https://tools.poldro.eu";

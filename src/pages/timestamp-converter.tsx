@@ -1,4 +1,5 @@
 import { type NextPage } from "next";
+import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CopyOnClick } from "../components/ClickToCopy";
 import { Title } from "../components/Title";
@@ -52,9 +53,7 @@ function LiveClock() {
 // ── Relative time that ticks ─────────────────────────────────────────────────
 
 function LiveRelative({ unix }: { unix: number }) {
-  const [label, setLabel] = useState(() =>
-    getRelative(new Date(unix * 1000))
-  );
+  const [label, setLabel] = useState(() => getRelative(new Date(unix * 1000)));
 
   useEffect(() => {
     const update = () => setLabel(getRelative(new Date(unix * 1000)));
@@ -77,7 +76,11 @@ interface OutputCardProps {
 }
 
 function OutputCard({ label, value, copyText, wide, muted }: OutputCardProps) {
-  const text = copyText ?? (typeof value === "string" || typeof value === "number" ? String(value) : "");
+  const text =
+    copyText ??
+    (typeof value === "string" || typeof value === "number"
+      ? String(value)
+      : "");
 
   const inner = (
     <div
@@ -85,10 +88,18 @@ function OutputCard({ label, value, copyText, wide, muted }: OutputCardProps) {
         muted ? "border-gray-800" : "border-gray-700"
       } ${wide ? "col-span-2" : ""}`}
     >
-      <p className={`mb-1 text-xs font-medium ${muted ? "text-gray-600" : "text-gray-500"}`}>
+      <p
+        className={`mb-1 text-xs font-medium ${
+          muted ? "text-gray-600" : "text-gray-500"
+        }`}
+      >
         {label}
       </p>
-      <p className={`font-mono text-sm break-all ${muted ? "text-gray-500" : "text-gray-100"}`}>
+      <p
+        className={`break-all font-mono text-sm ${
+          muted ? "text-gray-500" : "text-gray-100"
+        }`}
+      >
         {value}
       </p>
     </div>
@@ -146,14 +157,26 @@ const TimestampConverter: NextPage = () => {
     (currentTab: Tab, unix: string, date: string) => {
       setError(null);
       if (currentTab === "unix-to-date") {
-        if (!unix.trim()) { setResult(null); return; }
+        if (!unix.trim()) {
+          setResult(null);
+          return;
+        }
         const ts = Number(unix);
-        if (isNaN(ts)) { setError("Enter a valid number."); return; }
+        if (isNaN(ts)) {
+          setError("Enter a valid number.");
+          return;
+        }
         setResult(fromUnix(ts));
       } else {
-        if (!date) { setResult(null); return; }
+        if (!date) {
+          setResult(null);
+          return;
+        }
         const conv = fromDateString(date);
-        if (isNaN(conv.unix)) { setError("Invalid date."); return; }
+        if (isNaN(conv.unix)) {
+          setError("Invalid date.");
+          return;
+        }
         setResult(conv);
       }
     },
@@ -162,8 +185,13 @@ const TimestampConverter: NextPage = () => {
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => runConvert(tab, unixInput, dateInput), 200);
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+    debounceRef.current = setTimeout(
+      () => runConvert(tab, unixInput, dateInput),
+      200
+    );
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
   }, [tab, unixInput, dateInput, runConvert]);
 
   const handleNow = useCallback(() => {
@@ -175,7 +203,9 @@ const TimestampConverter: NextPage = () => {
       const d = new Date(now.unixMs);
       const pad = (n: number) => String(n).padStart(2, "0");
       setDateInput(
-        `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+        `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+          d.getHours()
+        )}:${pad(d.getMinutes())}`
       );
     }
     setResult(now);
@@ -198,105 +228,132 @@ const TimestampConverter: NextPage = () => {
   );
 
   return (
-    <Layout>
-      <Title title="Timestamp & Date Converter" />
+    <>
+      <Head>
+        <title>Timestamp Converter</title>
+        <meta
+          name="description"
+          content="Convert Unix timestamps to ISO 8601, RFC 2822, and local time, and back."
+        />
+      </Head>
+      <Layout>
+        <Title title="Timestamp & Date Converter" />
 
-      {/* Live clock */}
-      <div className="mt-4 mb-6">
-        <LiveClock />
-      </div>
+        {/* Live clock */}
+        <div className="mt-4 mb-6">
+          <LiveClock />
+        </div>
 
-      {/* Tabs */}
-      <div className="mb-5 flex gap-2">
-        <TabBtn active={tab === "unix-to-date"} onClick={() => handleTabChange("unix-to-date")}>
-          Unix → Date
-        </TabBtn>
-        <TabBtn active={tab === "date-to-unix"} onClick={() => handleTabChange("date-to-unix")}>
-          Date → Unix
-        </TabBtn>
-      </div>
+        {/* Tabs */}
+        <div className="mb-5 flex gap-2">
+          <TabBtn
+            active={tab === "unix-to-date"}
+            onClick={() => handleTabChange("unix-to-date")}
+          >
+            Unix → Date
+          </TabBtn>
+          <TabBtn
+            active={tab === "date-to-unix"}
+            onClick={() => handleTabChange("date-to-unix")}
+          >
+            Date → Unix
+          </TabBtn>
+        </div>
 
-      <div className="space-y-4">
-        {/* Input */}
-        {tab === "unix-to-date" ? (
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-gray-300">
-              Unix Timestamp
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="number"
-                value={unixInput}
-                onChange={(e) => setUnixInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="e.g. 1713000000"
-                autoFocus
-                className="flex-1 rounded-md border border-gray-600 bg-dark/50 px-3 py-2 font-mono text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <button
-                onClick={handleNow}
-                title="Use current time"
-                className="rounded-md border border-gray-600 px-3 py-2 text-sm text-gray-300 hover:border-primary hover:text-primary transition-colors"
-              >
-                Now
-              </button>
+        <div className="space-y-4">
+          {/* Input */}
+          {tab === "unix-to-date" ? (
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-gray-300">
+                Unix Timestamp
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  value={unixInput}
+                  onChange={(e) => setUnixInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="e.g. 1713000000"
+                  autoFocus
+                  className="flex-1 rounded-md border border-gray-600 bg-dark/50 px-3 py-2 font-mono text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <button
+                  onClick={handleNow}
+                  title="Use current time"
+                  className="rounded-md border border-gray-600 px-3 py-2 text-sm text-gray-300 transition-colors hover:border-primary hover:text-primary"
+                >
+                  Now
+                </button>
+              </div>
+              <p className="text-xs text-gray-600">
+                Supports seconds (10 digits) and milliseconds (13 digits) ·
+                auto-converts as you type
+              </p>
             </div>
-            <p className="text-xs text-gray-600">
-              Supports seconds (10 digits) and milliseconds (13 digits) · auto-converts as you type
-            </p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-gray-300">
-              Date & Time (local timezone)
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="datetime-local"
-                value={dateInput}
-                onChange={(e) => setDateInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="flex-1 rounded-md border border-gray-600 bg-dark/50 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <button
-                onClick={handleNow}
-                title="Use current time"
-                className="rounded-md border border-gray-600 px-3 py-2 text-sm text-gray-300 hover:border-primary hover:text-primary transition-colors"
-              >
-                Now
-              </button>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-gray-300">
+                Date & Time (local timezone)
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="datetime-local"
+                  value={dateInput}
+                  onChange={(e) => setDateInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="flex-1 rounded-md border border-gray-600 bg-dark/50 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <button
+                  onClick={handleNow}
+                  title="Use current time"
+                  className="rounded-md border border-gray-600 px-3 py-2 text-sm text-gray-300 transition-colors hover:border-primary hover:text-primary"
+                >
+                  Now
+                </button>
+              </div>
+              <p className="text-xs text-gray-600">auto-converts as you type</p>
             </div>
-            <p className="text-xs text-gray-600">auto-converts as you type</p>
-          </div>
-        )}
+          )}
 
-        {error && (
-          <div className="rounded-md border border-red-500 bg-red-500/10 px-4 py-2 text-sm text-red-400">
-            {error}
-          </div>
-        )}
+          {error && (
+            <div className="rounded-md border border-red-500 bg-red-500/10 px-4 py-2 text-sm text-red-400">
+              {error}
+            </div>
+          )}
 
-        {/* Output grid */}
-        {result && (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <OutputCard label="Unix (seconds)" value={result.unix} />
-            <OutputCard label="Unix (milliseconds)" value={result.unixMs} />
-            <OutputCard label="ISO 8601 (UTC)" value={result.iso8601} />
-            <OutputCard label="ISO with local offset" value={result.isoWithOffset} />
-            <OutputCard label="RFC 2822" value={result.rfc2822} wide />
-            <OutputCard label="UTC (human)" value={result.utc} wide />
-            <OutputCard label="Local" value={result.local} />
-            <OutputCard
-              label="Relative"
-              value={<LiveRelative unix={result.unix} />}
-              copyText={result.relative}
-            />
-            <OutputCard label="ISO week" value={`W${String(result.weekNumber).padStart(2, "0")}`} muted />
-            <OutputCard label="Day of year" value={`Day ${result.dayOfYear}`} muted />
-          </div>
-        )}
-      </div>
-    </Layout>
+          {/* Output grid */}
+          {result && (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <OutputCard label="Unix (seconds)" value={result.unix} />
+              <OutputCard label="Unix (milliseconds)" value={result.unixMs} />
+              <OutputCard label="ISO 8601 (UTC)" value={result.iso8601} />
+              <OutputCard
+                label="ISO with local offset"
+                value={result.isoWithOffset}
+              />
+              <OutputCard label="RFC 2822" value={result.rfc2822} wide />
+              <OutputCard label="UTC (human)" value={result.utc} wide />
+              <OutputCard label="Local" value={result.local} />
+              <OutputCard
+                label="Relative"
+                value={<LiveRelative unix={result.unix} />}
+                copyText={result.relative}
+              />
+              <OutputCard
+                label="ISO week"
+                value={`W${String(result.weekNumber).padStart(2, "0")}`}
+                muted
+              />
+              <OutputCard
+                label="Day of year"
+                value={`Day ${result.dayOfYear}`}
+                muted
+              />
+            </div>
+          )}
+        </div>
+      </Layout>
+    </>
   );
 };
 
