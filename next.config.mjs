@@ -14,7 +14,10 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-
-  
+  // Retired tools send their visitors to the home page.
+  redirects: () =>
+    Promise.resolve([
+      { source: "/dummy-data-generator", destination: "/", permanent: true },
+    ]),
 };
 export default config;

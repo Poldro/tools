@@ -8,14 +8,6 @@ export const navigation = [
     icon: "DocumentTextIcon",
   },
   {
-    name: "Dummy Data Generator",
-    href: "/dummy-data-generator",
-    current: false,
-    description:
-      "Generate random text, emails, and phone numbers for testing and prototyping.",
-    icon: "SparklesIcon",
-  },
-  {
     name: "Color Converter",
     href: "/color-converter",
     current: false,
@@ -54,6 +46,46 @@ export const navigation = [
     description:
       "Reflow hard-wrapped console text: rejoin broken lines while keeping bullets and paragraphs.",
     icon: "Bars3BottomLeftIcon",
+  },
+  {
+    name: "JWT Decoder",
+    href: "/jwt-decoder",
+    current: false,
+    description:
+      "Read a token's header, claims, and expiry. Decoded in your browser, never sent anywhere.",
+    icon: "KeyIcon",
+  },
+  {
+    name: "Encode / Decode",
+    href: "/encode-decode",
+    current: false,
+    description:
+      "Base64, URL, and HTML-entity encoding in both directions, plus a SHA-256 hash.",
+    icon: "ArrowsRightLeftIcon",
+  },
+  {
+    name: "URL & UTM Builder",
+    href: "/url-utm-builder",
+    current: false,
+    description:
+      "Break a URL into its parameters and build campaign links with UTM tags.",
+    icon: "LinkIcon",
+  },
+  {
+    name: "Text Diff",
+    href: "/text-diff",
+    current: false,
+    description:
+      "Compare two versions of a text and see what was added or removed, by line or by word.",
+    icon: "DocumentDuplicateIcon",
+  },
+  {
+    name: "Cron Explainer",
+    href: "/cron-explainer",
+    current: false,
+    description:
+      "Translate a cron expression into plain words and list its next run times.",
+    icon: "CalendarDaysIcon",
   },
 ];
 

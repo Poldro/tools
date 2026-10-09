@@ -1,30 +1,11 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  Bars3BottomLeftIcon,
-  Bars3Icon,
-  ClockIcon,
-  CodeBracketIcon,
-  DocumentTextIcon,
-  MagnifyingGlassIcon,
-  SparklesIcon,
-  SwatchIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ICON_MAP } from "../components/toolIcons";
 import { navigation } from "../utils/const";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
-
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
-  DocumentTextIcon,
-  SparklesIcon,
-  SwatchIcon,
-  CodeBracketIcon,
-  MagnifyingGlassIcon,
-  ClockIcon,
-  Bars3BottomLeftIcon,
-};
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

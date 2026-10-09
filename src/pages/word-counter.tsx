@@ -1,26 +1,10 @@
 import { type NextPage } from "next";
 import { useState, useCallback } from "react";
-import { GrammarlyEditorPlugin } from "@grammarly/editor-sdk-react";
 import Head from "next/head";
 import Layout from "../containers/layout";
 import TextAreaInput from "../components/TextAreaInput";
 import { Title } from "../components/Title";
-
-// Helper function to calculate word, character, and sentence count
-
-function calculateCounts(text: string) {
-  const words = text.trim().split(/\s+/g).filter(Boolean);
-  const characters = text.length;
-  const sentences = text
-    .split(/[.?!]/g)
-    .filter((sentence) => /\w/.test(sentence)).length;
-
-  return {
-    wordCount: words.length,
-    characterCount: characters,
-    sentenceCount: sentences,
-  };
-}
+import { calculateCounts } from "../utils/word-counter";
 
 const CountWords: NextPage = () => {
   const [text, setText] = useState(""); // New state variable
@@ -60,7 +44,7 @@ const CountWords: NextPage = () => {
         <title>Word Counter</title>
         <meta
           name="description"
-          content="A simple free word counter, integrated with Grammarly to check English grammar."
+          content="Count the words, characters, and sentences of a text, or of just the passage you select."
         />
       </Head>
       <Layout>
@@ -69,14 +53,12 @@ const CountWords: NextPage = () => {
 
           <div className="w-full max-w-3xl rounded-md bg-white/10 shadow">
             <div className="overflow-hidden px-4 py-4 sm:px-6">
-              <GrammarlyEditorPlugin clientId="client_2QNNYPesdJhwfCszntmPA6">
-                <TextAreaInput
-                  value={text}
-                  placeholder="Copy paste your text to count words, characters and sentences. You can select a particular piece of text to count it."
-                  onChange={handleChange}
-                  onSelect={handleSelection}
-                />
-              </GrammarlyEditorPlugin>
+              <TextAreaInput
+                value={text}
+                placeholder="Copy paste your text to count words, characters and sentences. You can select a particular piece of text to count it."
+                onChange={handleChange}
+                onSelect={handleSelection}
+              />
             </div>
           </div>
           <div className="w-full max-w-3xl">

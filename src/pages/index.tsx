@@ -1,27 +1,9 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {
-  Bars3BottomLeftIcon,
-  ClockIcon,
-  CodeBracketIcon,
-  DocumentTextIcon,
-  MagnifyingGlassIcon,
-  SparklesIcon,
-  SwatchIcon,
-} from "@heroicons/react/24/outline";
 
+import { ICON_MAP } from "../components/toolIcons";
 import { navigation } from "../utils/const";
-
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
-  DocumentTextIcon,
-  SparklesIcon,
-  SwatchIcon,
-  CodeBracketIcon,
-  MagnifyingGlassIcon,
-  ClockIcon,
-  Bars3BottomLeftIcon,
-};
 
 const Home: NextPage = () => {
   return (
